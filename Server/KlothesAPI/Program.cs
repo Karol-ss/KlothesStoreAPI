@@ -7,6 +7,14 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddDbContext<ApplicationDbContext>(options 
     => options.UseSqlServer(builder.Configuration.GetConnectionString("ConnectionSenai")));
 
+
+builder.Services.AddCors(options => {
+    options.AddPolicy("AllowAll", builder =>
+{
+    builder.AllowAnyOrigin().AllowAnyHeader().AllowAnyMethod();
+});
+});
+
 // Add services to the container.
 
 builder.Services.AddControllers();
@@ -28,5 +36,7 @@ app.UseHttpsRedirection();
 app.UseAuthorization();
 
 app.MapControllers();
+
+app.UseCors("AllowAll");
 
 app.Run();
